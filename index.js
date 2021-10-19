@@ -16,7 +16,7 @@ switch (command) {
     list()
     break
   case 'remove':
-    remove()
+    remove(title)
     break
   case 'view':
     view(title)
@@ -74,5 +74,18 @@ function view(title) {
     } else {
       stdout.write(`${foundNote.content}`)
     }
+  })
+}
+
+function remove(title) {
+  fs.readFile(path.join(__dirname, 'notes', 'notes.json'), (e, data) => {
+    if (e) stdout.write('Something went wrong while reading file...')
+    const arr = JSON.parse(data)
+    const filteredData = arr.filter(note => note.title !== title)
+    const dataToUpdate = JSON.stringify(filteredData)
+
+    fs.writeFile(path.join(__dirname, 'notes', 'notes.json'), dataToUpdate, (e) => {
+      if (e) stdout.write('Something went wrong while writing file...')
+    })
   })
 }
