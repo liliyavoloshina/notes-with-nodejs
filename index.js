@@ -1,4 +1,4 @@
-const { stdin, stdout } = process
+const { stdout } = process
 const fs = require('fs')
 const path = require('path')
 
