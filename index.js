@@ -6,7 +6,7 @@ const [command, title, content] = process.argv.slice(2)
 const folderName = './notes',
   fileName = 'notes'
 
-  init()
+init()
 
 switch (command) {
   case 'create':
@@ -17,6 +17,9 @@ switch (command) {
     break
   case 'remove':
     remove()
+    break
+  case 'view':
+    view(title)
     break
   default:
     stdout.write('Valid command: create, list, remove')
@@ -57,5 +60,19 @@ function list() {
     arr.forEach((note, idx) => {
       console.log(`Note ${idx + 1}: ${note.title}`)
     })
+  })
+}
+
+function view(title) {
+  fs.readFile(path.join(__dirname, 'notes', 'notes.json'), (e, data) => {
+    if (e) stdout.write('Something went wrong while reading file...')
+    const arr = JSON.parse(data)
+    const foundNote = arr.find(note => note.title === title)
+
+    if (!foundNote) {
+      stdout.write('There is no note with this title...')
+    } else {
+      stdout.write(`${foundNote.content}`)
+    }
   })
 }
