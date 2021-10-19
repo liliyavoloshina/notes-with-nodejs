@@ -6,6 +6,8 @@ const [command, title, content] = process.argv.slice(2)
 const folderName = './notes',
   fileName = 'notes'
 
+  init()
+
 switch (command) {
   case 'create':
     create(title, content)
@@ -20,7 +22,7 @@ switch (command) {
     stdout.write('Valid command: create, list, remove')
 }
 
-function create(title, content) {
+function init() {
   if (!fs.existsSync(folderName)) {
     fs.mkdir(path.join(__dirname, 'notes'), err => {
       if (err) stdout.write('Something went wrong while creating folder...')
@@ -33,6 +35,9 @@ function create(title, content) {
       if (err) stdout.write('Something went wrong while creating file...')
     })
   }
+}
+
+function create(title, content) {
   fs.readFile(path.join(__dirname, 'notes', 'notes.json'), (err, data) => {
     if (err) stdout.write('Something went wrong while reading file...')
     const oldData = JSON.parse(data)
